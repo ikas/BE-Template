@@ -12,3 +12,5 @@ async function init() {
     process.exit(1);
   }
 }
+
+module.exports = init;
