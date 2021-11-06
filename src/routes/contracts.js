@@ -32,4 +32,24 @@ router.get('/:id', getProfile, async (req, res) => {
   return res.status(404).end();
 });
 
+/**
+ * Returns non-terminated contracts for the profile making the request.
+ */
+ router.get('/', getProfile, async (req, res) => {
+  const { Contract } = req.app.get('models');
+  const profileId = req.profile.id;
+
+  const contract = await Contract.findAll({ where: {
+    [Op.and]: [
+      { [Op.or]: { ContractorId: profileId, ClientId: profileId } },
+      { status: {[Op.ne]: 'terminated'} },
+    ]}});
+
+  if(contract) {
+    return res.json(contract);
+  }
+
+  return res.status(404).end();
+});
+
 module.exports = router;
