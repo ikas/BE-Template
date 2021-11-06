@@ -26,10 +26,7 @@ describe('Contracts API', () => {
             const user2 = await createProfile();
             const user3 = await createProfile();
             
-            const contract = await createContract({
-                ClientId: user2.id,
-                ContractorId: user3.id,
-            });
+            const contract = await createContract(user2.id, user3.id);
 
             const response = await requester
                 .get(`/contracts/${contract.id}`)
@@ -42,10 +39,7 @@ describe('Contracts API', () => {
             const user1 = await createProfile();
             const user2 = await createProfile();
             
-            const contract = await createContract({
-                ClientId: user1.id,
-                ContractorId: user2.id,
-            });
+            const contract = await createContract(user1.id, user2.id);
 
             const response = await requester
                 .get(`/contracts/${contract.id}`)
@@ -72,29 +66,10 @@ describe('Contracts API', () => {
             const user2 = await createProfile();
             const user3 = await createProfile();
 
-            const contract1 = await createContract({
-                status: 'in progress',
-                ClientId: user1.id,
-                ContractorId: user2.id,
-            });
-
-            const contract2 = await createContract({
-                status: 'in progress',
-                ClientId: user3.id,
-                ContractorId: user2.id,
-            });
-
-            const contract3 = await createContract({
-                status: 'terminated',
-                ClientId: user1.id,
-                ContractorId: user2.id,
-            });
-
-            const contract4 = await createContract({
-                status: 'terminated',
-                ClientId: user3.id,
-                ContractorId: user2.id,
-            });
+            const contract1 = await createContract(user1.id, user2.id, 'in progress');
+            const contract2 = await createContract(user3.id, user2.id, 'in progress');
+            const contract3 = await createContract(user1.id, user2.id);
+            const contract4 = await createContract(user3.id, user2.id);
 
             const response = await requester
                 .get(`/contracts`)
