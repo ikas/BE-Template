@@ -49,8 +49,17 @@ The exercise requires [Node.js](https://nodejs.org/en/) to be installed. We reco
 
 ❗️ **Make sure you commit all changes to the master branch!**
 
-  
-  
+
+## Testing Setup
+
+Testing for this exercise uses [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/). Tests are located in the `test` directory. To run the tests, 
+
+1. Clone the repository and run `npm install` to install dependencies. 
+
+2. Run `npm run test`. 
+
+❗️ **Testing uses the same database as the live application, so make sure to run `npm run seed` to re-seed the database after running tests.**
+
 
 ## Technical Notes
 
