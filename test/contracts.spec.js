@@ -16,6 +16,14 @@ describe('Contracts', () => {
         response.status.should.equal(401);
     });
 
+    it('Getting a contract that is not owned by the profile making the request returns 404 Not Found', async () => {
+        const response = await requester
+            .get(`/contracts/1`)
+            .set('profile_id', '3');
+
+        response.status.should.equal(404);
+    });
+
     it('Getting a contract owned by the profile making the request returns 200 OK', async () => {
         const response = await requester
             .get(`/contracts/1`)
