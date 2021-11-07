@@ -19,12 +19,17 @@ exports.createContract = async function createContract(ClientId, ContractorId, s
     });
 }
 
-exports.createJob = async function createJob(ContractId, paid = false, price = 2000) {
+exports.createJob = async function createJob(
+    ContractId, 
+    paid = false, 
+    price = 2000, 
+    paymentDate = '2020-08-15T19:11:26.737Z'
+) {
     return await Job.create({
         description: 'work',
         price,
         paid: paid ? true : null,
-        paymentDate: paid ? '2020-08-15T19:11:26.737Z' : null,
+        paymentDate: paid ? paymentDate : null,
         ContractId,
     });
 }
