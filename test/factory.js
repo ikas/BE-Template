@@ -1,11 +1,11 @@
 const { Profile, Contract, Job } = require('../src/model');
 
-exports.createProfile = async function createProfile() {
+exports.createProfile = async function createProfile(balance = 1000) {
     return await Profile.create({
         firstName: 'Harry',
         lastName: 'Potter',
         profession: 'Wizard',
-        balance: 1150,
+        balance,
         type: 'client',
     });
 }
@@ -19,10 +19,10 @@ exports.createContract = async function createContract(ClientId, ContractorId, s
     });
 }
 
-exports.createJob = async function createJob(ContractId, paid = false) {
+exports.createJob = async function createJob(ContractId, paid = false, price = 2000) {
     return await Job.create({
         description: 'work',
-        price: 2020,
+        price,
         paid: paid ? true : null,
         paymentDate: paid ? '2020-08-15T19:11:26.737Z' : null,
         ContractId,
