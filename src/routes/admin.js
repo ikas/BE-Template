@@ -55,4 +55,65 @@ router.get('/best-profession', getProfile, async (req, res) => {
     })));
 });
 
+/**
+* Returns the clients the paid the most for jobs in the query time period. 
+* Limit query parameter should be applied, default limit is 2.
+*/
+router.get('/best-clients', getProfile, async (req, res) => {
+    const { Job, Contract, Profile } = req.app.get('models');
+    const { start, end, limit } = req.query;
+    
+    const startDate = new Date(start);
+    if(!start || isNaN(startDate.getTime())) {
+        return res.status(400).json({ error: 'Start date not provided or invalid' });
+    }
+    
+    const endDate = new Date(end);
+    if(!end || isNaN(endDate.getTime())) {
+        return res.status(400).json({ error: 'End date not provided or invalid' });
+    }
+    
+    const results = await Profile.findAll({ 
+        include: [
+            { 
+                model: Contract, 
+                required: true,
+                as: 'Client',
+                include: [{ 
+                    model: Job, 
+                    required: true, 
+                    where: { 
+                        paid: true,
+                        paymentDate: {
+                            [Op.and]: [
+                                { [Op.gte]: startDate },
+                                { [Op.lte]: endDate },
+                            ]
+                        },
+                    },
+                }], 
+            },
+        ],
+        attributes: {
+            include: [
+                [sequelize.fn('sum', sequelize.col('Client.Jobs.price')), 'total_paid'],
+                [sequelize.literal("firstName || ' ' || lastName"), 'fullName'],
+            ],
+        },
+        group: 'Profile.id',
+        order: [[sequelize.col('total_paid'), 'DESC']],
+        limit: limit || 2,
+        // There's a bug with limits in queries with includes
+        // https://github.com/sequelize/sequelize/issues/7344#issuecomment-307390689
+        // adding subQuery: false is the recommended workaround
+        subQuery: false,
+    });
+
+    return res.json(results.map(el => ({ 
+        id: el.get('id'),
+        fullName: el.get('fullName'),
+        paid: el.get('total_paid'), 
+    })));
+});
+
 module.exports = router;
