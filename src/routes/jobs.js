@@ -21,7 +21,7 @@ router.get('/unpaid', getProfile, async (req, res) => {
         required: true, 
         where: { 
           [Op.or]: { ContractorId: profileId, ClientId: profileId },
-          status: { [Op.ne]: 'terminated' },
+          status: 'in progress',
         }
       }
     ]
