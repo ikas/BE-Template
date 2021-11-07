@@ -39,17 +39,13 @@ router.get('/:id', getProfile, async (req, res) => {
   const { Contract } = req.app.get('models');
   const profileId = req.profile.id;
 
-  const contract = await Contract.findAll({ where: {
+  const contracts = await Contract.findAll({ where: {
     [Op.and]: [
       { [Op.or]: { ContractorId: profileId, ClientId: profileId } },
       { status: {[Op.ne]: 'terminated'} },
     ]}});
 
-  if(contract) {
-    return res.json(contract);
-  }
-
-  return res.status(404).end();
+  return res.json(contracts);
 });
 
 module.exports = router;

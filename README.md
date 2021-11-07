@@ -52,14 +52,13 @@ The exercise requires [Node.js](https://nodejs.org/en/) to be installed. We reco
 
 ## Testing Setup
 
-Testing for this exercise uses [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/). Tests are located in the `test` directory. To run the tests, 
+The testing strategy for this API relies on [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/). Tests are located in the `test` directory. To run the tests, run `npm install` to install dependencies and then run `npm run test`.
 
-1. Clone the repository and run `npm install` to install dependencies. 
+❗️ **Testing uses the same database as the main application, so make sure to run test only on non-production databases.**
 
-2. Run `npm run test`. 
+Before and after running tests, the database is cleaned, so make sure to run `npm run seed` after running the tests if you need seed data.
 
-❗️ **Testing uses the same database as the live application, so make sure to run `npm run seed` to re-seed the database after running tests.**
-
+To get the code coverage report, run `npm run coverage`.
 
 ## Technical Notes
 
